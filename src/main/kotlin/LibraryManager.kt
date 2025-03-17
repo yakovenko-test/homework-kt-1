@@ -1,45 +1,19 @@
 package code.yakovenko
 
+import code.yakovenko.feature.HomeTakeable
+import code.yakovenko.feature.Readable
 import code.yakovenko.models.*
 import code.yakovenko.repository.LibraryRepository
 
 class LibraryManager(
     private val libraryRepository: LibraryRepository
 ) {
-    fun mainMenuProcessor(): Pair<List<LibraryItem>?, Boolean> {
-        showMainMenu()
-
-        print("Введите пункт меню: ")
-        return when (readln().toIntOrNull()) {
-            BOOK_TYPE -> Pair(libraryRepository.books, true)
-            NEWSPAPER_TYPE -> Pair(libraryRepository.disks, true)
-            DISK_TYPE -> Pair(libraryRepository.newspapers, true)
-            -1 -> {
-                println("Завершение работы программы")
-                Pair(null, false)
-            }
-            else -> {
-                println("Некорректный пункт меню")
-                Pair(null, true)
-            }
-        }
-    }
-
-    fun secondaryMenuProcessor(libraryItem: LibraryItem): Boolean {
-        showSecondaryMenu()
-
-        print("Введите пункт меню: ")
-        when(readln().toIntOrNull()) {
-            -1 -> return false
-            1 -> takeHomeItem(libraryItem)
-            2 -> readItem(libraryItem)
-            3 -> libraryItem.detailedInformation
-            4 -> returnItem(libraryItem)
-            else -> println("Некорректный пункт меню")
-        }
-
-        return true
-    }
+    val books
+        get() = libraryRepository.books
+    val disks
+        get() = libraryRepository.disks
+    val newspapers
+        get() = libraryRepository.newspapers
 
     fun showLibraryItems(libraryItems: Collection<LibraryItem>) {
         if (libraryItems.isEmpty()) {
@@ -51,53 +25,44 @@ class LibraryManager(
         }
     }
 
-    private fun showMainMenu() {
-        println("-1. Завершение работы программы")
-        println("1.  Показать книги")
-        println("2.  Показать газеты")
-        println("3.  Показать диски")
+    fun takeHomeItem(libraryItem: LibraryItem) {
+        println(
+            when {
+                !libraryItem.isAvailable -> "Невозможно взять домой недоступный объект"
+                libraryItem is HomeTakeable -> {
+                    libraryItem.takeHome()
+                    "${libraryItem.className} ${libraryItem.id} взяли домой"
+                }
+                else -> "Невозможно взять домой объект этого типа"
+            }
+        )
     }
 
-    private fun showSecondaryMenu() {
-        println("-1. Вернуться в меню выбора объекта")
-        println("1.  Взять домой")
-        println("2.  Читать в читальном зале")
-        println("3.  Показать подробную информацию")
-        println("4.  Вернуть")
+    fun readItem(libraryItem: LibraryItem) {
+        println(
+            when {
+                !libraryItem.isAvailable -> "Невозможно взять домой недоступный объект"
+                libraryItem is Readable -> {
+                    libraryItem.read()
+                    "${libraryItem.className} ${libraryItem.id} взяли в читальный зал"
+                }
+                else -> "Невозможно читать объект этого типа"
+            }
+        )
+    }
+
+    fun returnItem(libraryItem: LibraryItem) {
+        println(
+            if (libraryItem.isAvailable) {
+                "Невозможно вернуть доступный объект"
+            } else {
+                libraryItem.`return`()
+                "${libraryItem.className} ${libraryItem.id} вернули"
+            }
+        )
     }
 
     private fun showLibraryItem(libraryItem: LibraryItem, number: Int) {
         println("$number. ${libraryItem.briefInformation}")
-    }
-
-    private fun takeHomeItem(libraryItem: LibraryItem) {
-        if (libraryItem is Newspaper) {
-            println("Невозможно взять домой газету")
-        } else if (!libraryItem.isAvailable) {
-            println("Невозможно взять домой недоступный объект")
-        } else {
-            libraryRepository.updateItemAvailability(libraryItem, false)
-            println("${libraryItem.className} ${libraryItem.id} взяли домой")
-        }
-    }
-
-    private fun readItem(libraryItem: LibraryItem) {
-        if (libraryItem is Disk) {
-            println("Невозможно читать диск")
-        } else if (!libraryItem.isAvailable) {
-            println("Невозможно взять домой недоступный объект")
-        } else {
-            libraryRepository.updateItemAvailability(libraryItem, false)
-            println("${libraryItem.className} ${libraryItem.id} взяли в читальный зал")
-        }
-    }
-
-    private fun returnItem(libraryItem: LibraryItem) {
-        if (libraryItem.isAvailable) {
-            println("Невозможно вернуть доступный объект")
-        } else {
-            libraryRepository.updateItemAvailability(libraryItem, true)
-            println("${libraryItem.className} ${libraryItem.id} вернули")
-        }
     }
 }

@@ -1,14 +1,17 @@
 package code.yakovenko.models
 
+import code.yakovenko.feature.HomeTakeable
+import code.yakovenko.feature.Readable
 import code.yakovenko.extensions.toRuText
 
 class Book(
     override val id: Int,
-    override var isAvailable: Boolean,
     override val name: String,
     private val pagesNumber: Int,
     private val author: String,
-): LibraryItem {
+    availability: Boolean,
+): Readable, HomeTakeable {
+    override var isAvailable = availability
     override val className = "Книга"
 
     override val detailedInformation: String

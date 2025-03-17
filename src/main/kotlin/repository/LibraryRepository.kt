@@ -11,5 +11,4 @@ interface LibraryRepository {
     val newspapers: List<Newspaper>
 
     fun add(libraryItem: LibraryItem): Boolean
-    fun updateItemAvailability(libraryItem: LibraryItem, isAvailable: Boolean)
 }

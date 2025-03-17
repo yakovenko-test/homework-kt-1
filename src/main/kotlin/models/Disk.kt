@@ -1,5 +1,6 @@
 package code.yakovenko.models
 
+import code.yakovenko.feature.HomeTakeable
 import code.yakovenko.extensions.toRuText
 
 typealias DiskType = String
@@ -9,10 +10,11 @@ const val DVD: DiskType = "DVD"
 
 class Disk(
     override val id: Int,
-    override var isAvailable: Boolean,
     override val name: String,
-    private val type: DiskType
-): LibraryItem {
+    private val type: DiskType,
+    availability: Boolean,
+): HomeTakeable {
+    override var isAvailable = availability
     override val className = "Диск"
 
     override val detailedInformation: String

@@ -1,13 +1,15 @@
 package code.yakovenko.models
 
+import code.yakovenko.feature.Readable
 import code.yakovenko.extensions.toRuText
 
 class Newspaper(
     override val id: Int,
-    override var isAvailable: Boolean,
     override val name: String,
     private val issueNumber: Int,
-): LibraryItem {
+    availability: Boolean,
+): Readable {
+    override var isAvailable = availability
     override val className = "Газета"
 
     override val detailedInformation: String

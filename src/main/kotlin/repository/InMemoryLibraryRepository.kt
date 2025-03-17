@@ -16,8 +16,4 @@ class InMemoryLibraryRepository: LibraryRepository {
         get() = data.filterIsInstance<Newspaper>()
 
     override fun add(libraryItem: LibraryItem) = data.add(libraryItem)
-
-    override fun updateItemAvailability(libraryItem: LibraryItem, isAvailable: Boolean) {
-        libraryItem.isAvailable = isAvailable
-    }
 }

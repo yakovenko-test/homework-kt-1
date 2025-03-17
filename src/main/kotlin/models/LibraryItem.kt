@@ -12,4 +12,6 @@ interface LibraryItem {
     val briefInformation
         get() = "$name доступна: ${isAvailable.toRuText()}"
     val detailedInformation: String
+
+    fun `return`() { isAvailable = true }
 }
