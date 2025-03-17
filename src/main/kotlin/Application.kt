@@ -17,12 +17,15 @@ class Application(
                 val pickedNumber = readln().toIntOrNull()
 
                 when (pickedNumber) {
+                    -1 -> isContinue = false
                     null -> {
                         println("Некорректный номер объекта")
                         continue
                     }
-                    -1 -> isContinue = false
-                    !in 1..3 -> println("Некорректный номер объекта")
+                    !in 1..pickedItems.size -> {
+                        println("Несуществующий номер объекта")
+                        continue
+                    }
                 }
 
                 if (isContinue) {
