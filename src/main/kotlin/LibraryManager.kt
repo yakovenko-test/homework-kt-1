@@ -11,10 +11,13 @@ class LibraryManager(
 
         print("Введите пункт меню: ")
         return when (readln().toIntOrNull()) {
-            -1 -> Pair(null, false)
             BOOK_TYPE -> Pair(libraryRepository.books, true)
             NEWSPAPER_TYPE -> Pair(libraryRepository.disks, true)
             DISK_TYPE -> Pair(libraryRepository.newspapers, true)
+            -1 -> {
+                println("Завершение работы программы")
+                Pair(null, false)
+            }
             else -> {
                 println("Некорректный пункт меню")
                 Pair(null, true)
