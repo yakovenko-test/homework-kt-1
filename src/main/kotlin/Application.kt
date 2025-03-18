@@ -1,5 +1,8 @@
 package code.yakovenko
 
+import code.yakovenko.menu.MenuManager
+import code.yakovenko.menu.SecondaryMenuPoint.*
+
 class Application(
     private val menuManager: MenuManager
 ) {
@@ -13,23 +16,22 @@ class Application(
             var isContinue = true
 
             while (isContinue) {
-                print("Введите номер объекта (-1 -- вернуться в меню выбора объекта): ")
+                print("Введите номер объекта (${STEP_BACK.value} -- ${STEP_BACK.task}): ")
                 val pickedNumber = readln().toIntOrNull()
 
-                when (pickedNumber) {
-                    -1 -> isContinue = false
+                isContinue = when (pickedNumber) {
+                    STEP_BACK.value -> false
+                    !in 1..pickedItems.size -> {
+                        println("Номер несуществующего объекта")
+                        true
+                    }
                     null -> {
                         println("Некорректный номер объекта")
-                        continue
+                        true
                     }
-                    !in 1..pickedItems.size -> {
-                        println("Несуществующий номер объекта")
-                        continue
+                    else -> {
+                        menuManager.secondaryMenuProcess(pickedItems[pickedNumber.minus(1)])
                     }
-                }
-
-                if (isContinue) {
-                    isContinue = menuManager.secondaryMenuProcess(pickedItems[pickedNumber!!.minus(1)])
                 }
             }
         }

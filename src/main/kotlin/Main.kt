@@ -1,5 +1,6 @@
 package code.yakovenko
 
+import code.yakovenko.menu.MenuManager
 import code.yakovenko.repository.LibraryRepository
 import code.yakovenko.repository.MockRepository
 

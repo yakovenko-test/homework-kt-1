@@ -41,7 +41,7 @@ class LibraryManager(
     fun readItem(libraryItem: LibraryItem) {
         println(
             when {
-                !libraryItem.isAvailable -> "Невозможно взять домой недоступный объект"
+                !libraryItem.isAvailable -> "Невозможно читать недоступный объект"
                 libraryItem is Readable -> {
                     libraryItem.read()
                     "${libraryItem.className} ${libraryItem.id} взяли в читальный зал"

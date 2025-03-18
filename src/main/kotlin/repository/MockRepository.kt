@@ -1,6 +1,8 @@
 package code.yakovenko.repository
 
 import code.yakovenko.models.*
+import code.yakovenko.models.enums.DiskType
+import code.yakovenko.models.enums.Month
 
 class MockRepository: LibraryRepository {
     private val data = mutableListOf<LibraryItem>()
@@ -9,11 +11,11 @@ class MockRepository: LibraryRepository {
         add(Book(1, "Книга №1", 111, "Автор №1", true))
         add(Book(2, "Книга №2", 222, "Автор №2", false))
 
-        add(Disk(3, "Диск №1", CD, true))
-        add(Disk(4, "Диск №2", DVD, false))
+        add(Disk(3, "Диск №1", DiskType.DVD, true))
+        add(Disk(4, "Диск №2", DiskType.CD, false))
 
-        add(Newspaper(5, "Газета №1", 111, true))
-        add(Newspaper(6, "Газета №2", 222, false))
+        add(Newspaper(5, "Газета №1", 111, Month.JANUARY, true))
+        add(Newspaper(6, "Газета №2", 222, Month.FEBRUARY, false))
     }
 
     override val books

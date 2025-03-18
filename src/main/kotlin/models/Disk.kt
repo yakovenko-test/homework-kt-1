@@ -2,11 +2,7 @@ package code.yakovenko.models
 
 import code.yakovenko.feature.HomeTakeable
 import code.yakovenko.extensions.toRuText
-
-typealias DiskType = String
-
-const val CD: DiskType = "CD"
-const val DVD: DiskType = "DVD"
+import code.yakovenko.models.enums.DiskType
 
 class Disk(
     override val id: Int,
